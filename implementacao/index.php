@@ -30,6 +30,22 @@
       <div class="col-md-12 logo_center">
         <img class="logo_mateus" src="https://seeklogo.com/images/G/grupo-mateus-logo-77402B7BC9-seeklogo.com.png" alt="">
         <br><span>Pressione F2 para iniciar uma nova venda</span>
+        <div class="row">
+          <div class="col-md-5"></div>
+          <div class="col-md-1">
+            <div class="button-seletor">
+              <img src="assets/imagens/estoque.png" alt="">
+              <span>Estoque Filial(F3)</span>
+            </div>
+          </div>
+
+          <div class="col-md-1">
+            <div class="button-seletor">
+              <img src="assets/imagens/finalizar.png" alt="">
+              <span>Vendas(F4)</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -76,6 +92,81 @@
   </div>
 
 
+  <div class="modal fade" tabindex="-1" role="dialog"  id="modalControleEstoque" aria-labelledby="modalControleEstoque" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Controle de Estoque</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Filial:</label>
+              <select class="form-control" name="">
+                <option value=""></option>
+              </select>
+            </div>
+
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">COD</th>
+                  <th scope="col">Produto</th>
+                  <th scope="col">Quantidade</th>
+                  <th scope="col">Ações</th>
+                </tr>
+              </thead>
+
+            </table>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Adicionar Produto</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog"  id="modalVendasRealizadas" aria-labelledby="modalVendasRealizadas" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Controle de Estoque</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Filial:</label>
+              <select class="form-control" name="">
+                <option value=""></option>
+              </select>
+            </div>
+
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">COD</th>
+                  <th scope="col">Ordem de Saída</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Ações</th>
+                </tr>
+              </thead>
+
+            </table>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
   <footer>
     <div class="barra-info">
       <div class="container lh-30">
@@ -91,6 +182,7 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="assets/js/index.js"></script>
 
   <script type="text/javascript">
   $(document).ready(function(){

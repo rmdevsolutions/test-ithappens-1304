@@ -38,6 +38,10 @@ body{
   text-align: center;
 }
 
+.button-seletor span{
+  font-size: 12px !important
+}
+
 section{
   position: relative;
 }
