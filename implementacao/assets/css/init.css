@@ -128,3 +128,20 @@ section{
   width: 56%;
   position: absolute;
 }
+.t-right{
+  text-align: right;
+}
+
+.comErro{
+  background: #dc7979;
+  color: #FFF;
+}
+
+.semErro{
+  background: transparent;
+  color: #000;
+}
+
+table{
+  width: 100% !important;
+}

@@ -14,3 +14,8 @@
   padding: 8px;
   width: 60px;
 }
+
+#alertaErro,
+#alertaSucesso{
+  display: none;
+}
