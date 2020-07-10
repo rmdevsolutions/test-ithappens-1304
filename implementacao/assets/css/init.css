@@ -54,6 +54,7 @@ section{
   top: 25px;
   left: 10%;
   border-radius: 10px;
+  overflow: scroll;
 }
 
 .row{

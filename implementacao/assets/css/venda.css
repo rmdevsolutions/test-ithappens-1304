@@ -1,0 +1,17 @@
+.tituloCupom{
+  FONT-SIZE: 25px;
+  font-weight: bold;
+  top: 19px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.tr_abaixo{
+  text-align: center;
+  border-bottom: 1px #cabebe solid;
+}
+
+.itemCancelado{
+  background: #ffd0d0;
+}
