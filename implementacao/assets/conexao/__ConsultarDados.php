@@ -50,5 +50,9 @@ if($requestHTTP == 'consultarClientesGeral'){
   $SQL->getDadosBD('SELECT * FROM `Cliente`');
 }
 
+if($requestHTTP == 'consultarProdutoVenda'){
+  $codigoBarras = isset($_REQUEST['codigoBarras']) ? $_REQUEST['codigoBarras'] : null;
+  $SQL->getDadosBD("SELECT * FROM `Produto` WHERE `codigoBarras` = '$codigoBarras'");
+}
 
 ?>

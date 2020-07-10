@@ -27,12 +27,18 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
     $busca = "SELECT `Quantidade` FROM `Estoque` WHERE `idProduto` =  '$idProduto'";
     $retorno = $conecta->query($busca) or die (json_encode(array('mensagem'=>'erro', 'erro'=> $conecta->error)));
+    if($retorno->num_rows == 0){
+      echo json_encode(array('mensagem'=>'erro', 'erro'=> 'Produto não encontra-se no Estoque', 'quantidadeEstoque'=> 0));
+      exit();
+    }
+
     while ($r = $retorno->fetch_assoc()) {
       $quantidadeEmEstoque = $r['Quantidade'];
       if(($quantidadeEmEstoque - $quantidadeProduto) >= 0 ){
         $decrementarQuantidade = "UPDATE `Estoque` SET `Quantidade` = `Quantidade` - $quantidadeProduto WHERE `idProduto` =  '$idProduto';";
         $conecta->query($decrementarQuantidade);
-        $query = "INSERT INTO `ItensPedido`(`IdPedido`, `idProduto`, `Quantidade`) VALUES ('$idPedidoEstoque' , '$idProduto' , '$quantidadeProduto');";
+        $query = "INSERT INTO `ItensPedido`(`IdPedido`, `idProduto`, `Quantidade`) VALUES ('$idPedidoEstoque' , '$idProduto' , '$quantidadeProduto')
+        ON DUPLICATE KEY UPDATE Quantidade = Quantidade + $quantidadeProduto;";
         $SQL->setDadosBD($query);
       }else{
         echo json_encode(array('mensagem'=>'erro', 'erro'=> 'Estoque com quantidade inferior ao solicitado', 'quantidadeEstoque'=> $quantidadeEmEstoque));

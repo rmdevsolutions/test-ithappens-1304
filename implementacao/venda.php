@@ -62,7 +62,7 @@
         <div class="col-md-6"></div>
         <div class="col-md-5">
           <label for="">Produto/Codigo:</label>
-          <input type="text" class="form-control" name="" value="">
+          <input type="text" class="form-control" name="ddlProdutoVenda"  id="ddlProdutoVenda" value="">
         </div>
       </div>
 
@@ -70,7 +70,7 @@
         <div class="col-md-6"></div>
         <div class="col-md-5">
           <label for="">Quantidade:</label>
-          <input type="text" class="form-control" name="" value="">
+          <input type="text" class="form-control" name="ddlQuantidadeProdutoVenda" id="ddlQuantidadeProdutoVenda" value="">
         </div>
       </div>
       <div class="row ">
@@ -79,9 +79,8 @@
           <div class="position-subtotal">
             <span>Total</span>
             <div class="button-total ">
+              <span>R$ </span> <span id="subtotal">0</span>
             </div>
-
-
           </div>
         </div>
       </div>
@@ -90,8 +89,9 @@
     </div>
 
     <div class="codigoBarras">
+      <label id="informacaoInputProduto" style="margin-left:75px" for="">Informe o codigo de barras:</label>
       <div class="barras">
-        <input type="text" class="form-control input-barras" name="" value="">
+        <input type="text" id="campoEntradaVendas" class="form-control input-barras codigoBarrasVendas" name="" value="">
       </div>
     </div>
 
@@ -115,7 +115,7 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+  <script src="assets/js/vendas.js"></script>
   <script type="text/javascript">
   $(document).ready(function(){
 
@@ -123,7 +123,7 @@
       setInterval(function(){
         let data = new Date();
         $('#horarioAtual').text(data.getHours() +':'+data.getMinutes() +':'+data.getSeconds())
-        console.log(data.getHours() +':'+data.getMinutes() +':'+data.getSeconds());
+        // console.log(data.getHours() +':'+data.getMinutes() +':'+data.getSeconds());
       },1000);
     }
     horario();
