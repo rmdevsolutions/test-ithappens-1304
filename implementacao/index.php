@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="col-md-8">
-          <span class="letreiro-header">CAIXA LIVRE</span>
+          <span class="letreiro-header" style="text-align: right;left: 30%;">CAIXA LIVRE</span>
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@
         <img class="logo_mateus" src="https://seeklogo.com/images/G/grupo-mateus-logo-77402B7BC9-seeklogo.com.png" alt="">
         <br><span>Pressione F2 para iniciar uma nova venda</span>
         <div class="row">
-          <div class="col-md-3"></div>
+          <div class="col-md-3" style="margin-right: 4%;"></div>
           <div class="col-md-1">
             <div class="button-seletor elevacao">
               <img src="assets/imagens/estoque.png" alt="">
@@ -64,13 +64,6 @@
           <div class="col-md-1">
             <div class="button-seletor elevacao">
               <img src="assets/imagens/mais.png" alt="">
-              <span>Filiais(F7)</span>
-            </div>
-          </div>
-
-          <div class="col-md-1">
-            <div class="button-seletor elevacao">
-              <img src="assets/imagens/mais.png" alt="">
               <span>Usuarios(F8)</span>
             </div>
           </div>
@@ -84,7 +77,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Abertura de PDV</h5>
+          <h5 class="modal-title" >Abertura de PDV</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -139,35 +132,34 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Controle de Estoque</h5>
+          <h5 class="modal-title" >Controle de Estoque</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Filial:</label>
-              <select class="form-control filial" id="filialEstoqueID" onchange="consultar.estoqueFilial(this.value)">
-                <option value=""></option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Filial:</label>
+            <select class="form-control filial" id="filialEstoqueID" onchange="consultar.estoqueFilial(this.value)">
+              <option value=""></option>
+            </select>
+          </div>
 
-            <table id="estoqueFilial" class="table table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">COD</th>
-                  <th scope="col">Produto</th>
-                  <th scope="col">Quantidade</th>
-                  <th scope="col">Ações</th>
-                </tr>
-              </thead>
+          <table id="estoqueFilial" class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">COD</th>
+                <th scope="col">Produto</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Qnt Entrada</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
 
-            </table>
-          </form>
+          </table>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Adicionar Produto</button>
+          <button onclick="$('.modal').modal('hide') ; $('#modalIncrementarEstoque').modal()" type="button" class="btn btn-primary">Adicionar Produto</button>
         </div>
       </div>
     </div>
@@ -177,7 +169,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Controle de Vendas</h5>
+          <h5 class="modal-title" >Controle de Vendas</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -207,12 +199,44 @@
     </div>
   </div>
 
+
+  <!-- modal incluir Produtos em Estoque Filial -->
+  <div class="modal fade" tabindex="-1" role="dialog"  id="modalIncrementarEstoque" aria-labelledby="modalIncrementarEstoque" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" >Incremento de Estoque Filial</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Filial:</label>
+            <select onchange="consultar.produtosParaInserirEstoque(this.value)" class="form-control filial" id="filialSelectEstoque"></select>
+          </div>
+          <table id="produtosCadastrados" class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">COD Barras</th>
+                <th scope="col">Produto</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Quantidade Adc</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal Inserir Clientes -->
   <div class="modal fade" tabindex="-1" role="dialog"  id="modalInserirClientes" aria-labelledby="modalInserirClientes" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Cadastro de Cliente</h5>
+          <h5 class="modal-title" >Cadastro de Cliente</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -245,51 +269,103 @@
     </div>
   </div>
 
-  <!-- Modal Inserir Clientes -->
+  <!-- Modal Inserir Produtos -->
   <div class="modal fade" tabindex="-1" role="dialog"  id="modalInserirProdutos" aria-labelledby="modalInserirProdutos" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Cadastro de Produtos</h5>
+          <h5 class="modal-title" >Cadastro de Produtos</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <div class="row" >
+            <div class="col-md-12">
+              <div class="alert alert-danger" id="alertaErroProdutos" role="alert"></div>
+            </div>
+            <div class="col-md-12">
+              <div class="alert alert-success" id="alertaSucessoProdutos" role="alert"></div>
+            </div>
             <div class="col-md-6">
               <label for="recipient-name" class="col-form-label">Codigo de Barras</label>
-              <input type="text" class="form-control" name="cpfClienteCadastro" id="cpfClienteCadastro" value="">
+              <input type="text" class="form-control" name="codigoProdutoCadastro" id="codigoProdutoCadastro" value="">
             </div>
             <div class="col-md-6">
               <label for="nomeClienteCadastro" class="col-form-label">Produto</label>
-              <input type="text" class="form-control" name="nomeClienteCadastro" id="nomeClienteCadastro" value="">
+              <input type="text" class="form-control" name="nomeProdutoCadastro" id="nomeProdutoCadastro" value="">
             </div>
           </div>
           <div class="row" >
             <div class="col-md-6">
               <label for="recipient-name" class="col-form-label">Descrição</label>
-              <input type="text" class="form-control" name="cpfClienteCadastro" id="cpfClienteCadastro" value="">
+              <input type="text" class="form-control" name="descricaoProdutoCadastro" id="descricaoProdutoCadastro" value="">
             </div>
             <div class="col-md-6">
               <label for="nomeClienteCadastro" class="col-form-label">Valor</label>
-              <input type="text" class="form-control" name="nomeClienteCadastro" id="nomeClienteCadastro" value="">
+              <input type="text" class="form-control" name="valorProdutoCadastro" id="valorProdutoCadastro" value="">
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Adicionar Produto</button>
+          <button onclick="cadastrar.produto()" type="button" class="btn btn-primary">Adicionar Produto</button>
         </div>
       </div>
     </div>
   </div>
 
+
+  <!-- Modal Inserir Filial -->
+  <div class="modal fade" tabindex="-1" role="dialog"  id="modalUsuarios" aria-labelledby="modalUsuarios" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" >Cadastro de Filial</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row" >
+            <div class="col-md-12">
+              <div class="alert alert-danger" id="alertaErroUsuarios" role="alert"></div>
+            </div>
+            <div class="col-md-12">
+              <div class="alert alert-success" id="alertaSucessoUsuarios" role="alert"></div>
+            </div>
+            <div class="col-md-8">
+              <label for="recipient-name" class="col-form-label">Nome Funcionário</label>
+              <input type="text" class="form-control" name="nomeUsuarioCadastrar" id="nomeUsuarioCadastrar" value="">
+            </div>
+            <div class="col-md-4">
+              <button onclick="cadastrar.usuario()" style="margin-top: 37px;" type="button" class="btn btn-success" name="button">Adicionar Usuário</button>
+            </div>
+
+          </div>
+          <div class="row" style="margin-top:70px">
+            <div class="col-md-12">
+              <table id="usuariosTabela" class="table table-hover">
+                <thead>
+                  <th>ID</th>
+                  <th>Nome</th>
+                  <th>Ações</th>
+                </thead>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <footer>
     <div class="barra-info">
       <div class="container lh-30">
-        <span class="span-info">Operador:</span><span class="mr-30">Raimundo Martins</span>
+        <span class="span-info">Versão 1.0.0.1</span>
 
-        <span class="span-info">Filial:</span><span class="mr-30">Filial 01 - Cohama / Slz-MA</span>
+        <span class="span-info">Desenvolvedor:</span><span class="mr-30">Raimundo Martins</span>
 
         <span class="span-info">Horário:</span><span id="horarioAtual" class="mr-30"></span>
       </div>
@@ -322,6 +398,6 @@
 
 
   })
-</script>
+  </script>
 </body>
 </html>

@@ -16,6 +16,10 @@
 }
 
 #alertaErro,
-#alertaSucesso{
+#alertaSucesso,
+#alertaSucessoProdutos,
+#alertaErroProdutos,
+#alertaErroUsuarios,
+#alertaSucessoUsuarios{
   display: none;
 }

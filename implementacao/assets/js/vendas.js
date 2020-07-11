@@ -19,7 +19,11 @@ $(document).keydown(function(event){
     $('#modalSelecaoFormaPagamento').modal()
     return false;
   }
-  else if(event.which == 114){
+  else if(event.which == 113){ // F2
+    $('#modalPesquisaAvancada').modal();
+    return false;
+  }
+  else if(event.which == 114){ // F3
     $('#modalCancelamentodeItem').modal();
     return false;
   }
@@ -33,7 +37,13 @@ var cadastrar = {
   barras: undefined,
   descricao: undefined,
   quantidade: (quantidade)=>{
-    $.getJSON('assets/conexao/__Venda.php' , {solicitacao: 'insertItensPedido' , idPedidoEstoque: getQuery('idPedidoEstoque') , quantidadeProduto: quantidade , idProduto : cadastrar.idProduto} , function(e){
+    $.getJSON('assets/conexao/__Venda.php' , {
+      solicitacao: 'insertItensPedido' ,
+      idPedidoEstoque: getQuery('idPedidoEstoque') ,
+      quantidadeProduto: quantidade ,
+      idProduto : cadastrar.idProduto,
+      idFilial : $('#idFilialPedidoEstoque').val(),
+    } , function(e){
       console.log(e);
       var resultadoArray = [];
       resultadoArray.push(e);
@@ -116,8 +126,51 @@ var cadastrar = {
           cadastrar.descricao = value.Produto;
           cadastrar.barras = codigoBarras;
         })
+
       })
     },
+
+    inclusaoPesquisaAvancada:(codigoBarras, quantidade)=>{
+      if(parseInt(quantidade) <= 0){
+          alert('Informe uma quantidade superior a 0')
+          return
+      }
+
+      $.getJSON('assets/conexao/__ConsultarDados.php' , {solicitacao: 'consultarProdutoVenda' , codigoBarras: codigoBarras} , function(e){
+        if(e.length == 0){
+          alert('Produto não localizado');
+          $('#campoEntradaVendas').focus()
+        }
+        $.each(e, function(k, value){
+          $('#ddlProdutoVenda').val(value.Produto)
+          $('#informacaoInputProduto').text('Informe a quantidade para retirada de estoque')
+          $('#campoEntradaVendas').removeClass('codigoBarrasVendas').addClass('quantidadeProdutoVendas').val('')
+          cadastrar.idProduto = value.id;
+          cadastrar.valorProduto = value.valor;
+          cadastrar.descricao = value.Produto;
+          cadastrar.barras = codigoBarras;
+
+        })
+        cadastrar.quantidade(quantidade);
+        $('.modal').modal('hide')
+      })
+    },
+
+    consultaAvancada:(idFilial, string)=>{
+      let tipoConsulta = !isNaN(parseFloat(string)) && isFinite(string) ? 'consultarBarrasRelativo' : 'consultarProdutoRelativo';
+      let dataSet = new Array();
+      $.getJSON('assets/conexao/__ConsultarDados.php' , {solicitacao: tipoConsulta , idFilial: idFilial , string: string} , function(ef){
+        console.log(ef);
+        ef.forEach(function(e){
+          let input = `<input style="width: 70px;" type="number" value="0" class="form-control" id="adicionarProdutoPesquisaAvancada_${e.id}">`;
+          let botao = `<button class="btn btn-success" onclick="consultar.inclusaoPesquisaAvancada('${e.codigoBarras}', $('#adicionarProdutoPesquisaAvancada_${e.id}').val())">+</button>`;
+          dataSet.push([e.codigoBarras, e.Produto , e.Quantidade , input, botao]);
+          console.log(e);
+        })
+
+        inserirDataTable(dataSet, '#consultaAvancadaTabela');
+      })
+    }
 
 
   };
@@ -130,3 +183,30 @@ var cadastrar = {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
+
+  var inserirDataTable = (dataSet, elemento , quantidade = 5)=>{
+    $(elemento).DataTable(
+      {
+        "aaData": dataSet,
+        "destroy": true,
+        "pages": 1,
+
+        responsive: true,
+        columnDefs: [
+          { responsivePriority: 1, targets: -1 },
+          { responsivePriority: 2, targets: 0 }
+        ],
+        "lengthMenu": [
+          [quantidade, quantidade + 10, quantidade + 20 , quantidade + 100, 10000],
+          [quantidade, quantidade + 10 , quantidade + 20, quantidade + 100, 'TUDO']
+        ],
+        "language":
+        {
+          "lengthMenu": "Exibir _MENU_ itens por página",
+          "zeroRecords": "Não encontrado",
+          "info": "Exibindo pagina _PAGE_ de _PAGES_",
+          "infoEmpty": "Sem registros",
+          "infoFiltered": "(filtrado de _MAX_ registros)"
+        }
+      });
+    }

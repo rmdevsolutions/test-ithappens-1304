@@ -20,6 +20,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
+  width: 100%;
 }
 
 body{
@@ -36,6 +37,7 @@ body{
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  cursor: pointer
 }
 
 .button-seletor span{
@@ -54,7 +56,7 @@ section{
   top: 25px;
   left: 10%;
   border-radius: 10px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .row{
@@ -152,4 +154,10 @@ section{
 
 table{
   width: 100% !important;
+}
+
+@media (min-width: 992px){
+  .modal-xl {
+    max-width: 1444px !important;
+  }
 }

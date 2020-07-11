@@ -24,6 +24,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     $idPedidoEstoque = isset($_REQUEST['idPedidoEstoque']) ? $_REQUEST['idPedidoEstoque'] : null;
     $idProduto = isset($_REQUEST['idProduto']) ? $_REQUEST['idProduto'] : null;
     $quantidadeProduto = isset($_REQUEST['quantidadeProduto']) ? $_REQUEST['quantidadeProduto'] : null;
+    $idFilial = isset($_REQUEST['idFilial']) ? $_REQUEST['idFilial'] : null;
     $quantidadeEmListaPedido = 0;
 
     $sql = "SELECT * FROM `ItensPedido` WHERE `idProduto` = '$idProduto' AND `status` = 0";
@@ -36,7 +37,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     }
 
 
-    $busca = "SELECT `Quantidade` FROM `Estoque` WHERE `idProduto` =  '$idProduto'";
+    $busca = "SELECT `Quantidade` FROM `Estoque` WHERE `idProduto` =  '$idProduto' AND `idFilial` = '$idFilial'";
     $retorno = $conecta->query($busca) or die (json_encode(array('mensagem'=>'erro', 'erro'=> $conecta->error)));
     if($retorno->num_rows == 0){
       echo json_encode(array('mensagem'=>'erro', 'erro'=> 'Produto não encontra-se no Estoque', 'quantidadeEstoque'=> 0));

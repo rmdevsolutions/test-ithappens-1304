@@ -55,4 +55,50 @@ if($requestHTTP == 'consultarProdutoVenda'){
   $SQL->getDadosBD("SELECT * FROM `Produto` WHERE `codigoBarras` = '$codigoBarras'");
 }
 
+if($requestHTTP == 'consultarBarrasRelativo'){
+  $codigoBarras = isset($_REQUEST['string']) ? $_REQUEST['string'] : null;
+  $idFilial = isset($_REQUEST['idFilial']) ? $_REQUEST['idFilial'] : null;
+  $sql = "SELECT
+  A.`id`,
+  `codigoBarras`,
+  `Produto`,
+  `valor`,
+  `Descricao`,
+  B.Quantidade,
+  B.idProduto
+  FROM
+  `Produto` A
+  INNER JOIN `Estoque` B ON
+  (A.id = B.idProduto)
+  WHERE
+  `codigoBarras` LIKE '%".$codigoBarras."%' AND B.idFilial = '$idFilial'";
+  $SQL->getDadosBD($sql);
+
+}
+
+if($requestHTTP == 'consultarProdutoRelativo'){
+  $descricaoProduto = isset($_REQUEST['string']) ? $_REQUEST['string'] : null;
+  $idFilial = isset($_REQUEST['idFilial']) ? $_REQUEST['idFilial'] : null;
+  $sql = "SELECT
+  A.`id`,
+  `codigoBarras`,
+  `Produto`,
+  `valor`,
+  `Descricao`,
+  B.Quantidade,
+  B.idProduto
+  FROM
+  `Produto` A
+  INNER JOIN `Estoque` B ON
+  (A.id = B.idProduto)
+  WHERE
+  `Produto` LIKE '%".$descricaoProduto."%' AND B.idFilial = '$idFilial'";
+  $SQL->getDadosBD($sql);
+}
+
+if($requestHTTP == 'consultarProdutosInserirEstoque'){
+  $sql = "SELECT DISTINCT `id`, `codigoBarras`, `Produto`, `valor`, `Descricao` FROM `Produto`";
+  $SQL->getDadosBD($sql);
+}
+
 ?>

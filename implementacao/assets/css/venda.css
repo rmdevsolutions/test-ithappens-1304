@@ -15,3 +15,7 @@
 .itemCancelado{
   background: #ffd0d0;
 }
+
+#consultaAvancadaTabela td:not(:nth-child(4)){
+  padding-top: 17px;
+}

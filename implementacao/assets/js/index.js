@@ -21,6 +21,12 @@ $(document).keydown(function(event) {
     $('#modalInserirProdutos').modal()
     return false;
   }
+
+  else if(event.which == 119){ // F8
+    $('#modalUsuarios').modal()
+    consultar.usuarios();
+    return false
+  }
 });
 
 $('#cpfCliente').keydown(function(event) {
@@ -73,6 +79,27 @@ var cadastrar = {
     })
   },
 
+  usuario:()=>{
+    $.ajax({
+      type: 'GET',
+      dataType: 'JSON',
+      data: {solicitacao: 'cadastrarUsuario', nomeUsuario: $('#nomeUsuarioCadastrar').val()},
+      url: 'assets/conexao/__CadastrarDados.php',
+      success:(e)=>{
+        if(e.mensagem == 'sucesso'){
+          mensagemSucesso('Usuario Cadastrado com sucesso', '#alertaSucessoUsuarios', '#alertaErroUsuarios')
+          $('input').val('')
+
+        }else{
+          mensagemErro('Não foi possível criar o usuário', '#alertaSucessoUsuarios', '#alertaErroUsuarios')
+        }
+      },
+      error:(e)=>{
+        console.log(e);
+      }
+    })
+  },
+
   pedidoEstoque:()=>{
 
     var obrigatorio = document.querySelectorAll('.obrigatorio');
@@ -100,8 +127,6 @@ var cadastrar = {
       return
     }
 
-
-    console.log('passou');
     $.ajax({
       type: 'GET',
       dataType: 'JSON',
@@ -111,6 +136,8 @@ var cadastrar = {
         idUsuario: $('#idUsuario option:selected').val() ,
         observacaoEntrega: $('#observacaoEntrega').val(),
         solicitacao: 'cadastrarPedidoEstoque',
+        nomeOperador: $('#idUsuario option:selected').text(),
+        nomeFilial: $('#idFilial option:selected').text(),
       },
       url: cadastrar.url,
       success: (e)=>{
@@ -123,7 +150,47 @@ var cadastrar = {
         mensagemErro('Não foi possível iniciar a venda')
       }
     })
-  }
+  },
+
+  //Sessão de Cadastro e Manutenção de Produtos
+  produto:()=>{
+    let codigoProduto = $('#codigoProdutoCadastro').val();
+    let nomeProduto = $('#nomeProdutoCadastro').val();
+    let valorProduto = $('#valorProdutoCadastro').val();
+    let descricaoProduto = $('#descricaoProdutoCadastro').val();
+
+    if(codigoProduto == "" || nomeProduto == "" || valorProduto == "" || descricaoProduto == ""){
+      mensagemErro('Preencha todos os campos para prosseguir','#alertaSucessoProdutos', '#alertaErroProdutos')
+      return
+    }
+
+
+    $.ajax({
+      type: 'GET',
+      dataType: 'JSON',
+      data: {
+        codigoProduto : codigoProduto,
+        nomeProduto : nomeProduto,
+        valorProduto : valorProduto,
+        descricaoProduto : descricaoProduto,
+        solicitacao: 'cadastrarProduto'
+      },
+      url: 'assets/conexao/__CadastrarDados.php',
+      success:(e)=>{
+        if(e.mensagem == 'sucesso'){
+          mensagemSucesso('Produto cadastrado com sucesso','#alertaSucessoProdutos', '#alertaErroProdutos')
+          consultar.usuarios();
+          $('input').val('')
+        }else{
+          mensagemErro('Não foi possível cadastrar o novo produto','#alertaSucessoProdutos', '#alertaErroProdutos')
+        }
+      },
+      error:(e)=>{
+        console.log(e);
+      }
+    })
+  },
+
 }
 
 var consultar = {
@@ -152,12 +219,22 @@ var consultar = {
       }
     })
   },
+  inclusaoQuantidadeProdutoEstoqueFilial:(quantidade, idProdutoEstoque, idFilial)=>{
+    $.getJSON('assets/conexao/__CadastrarDados.php?solicitacao=adicionarQuantidadeProdutoEstoqueFilial', {id: idProdutoEstoque , quantidade:quantidade } , function(data){
+      if(data.mensagem == "sucesso"){
+        consultar.estoqueFilial(idFilial)
+      }
+    })
+  },
 
   estoqueFilial:(idFilial)=>{
     $.getJSON('assets/conexao/__ConsultarDados.php?solicitacao=consultarEstoqueFilial', {idFilial: idFilial} , function(data){
       let dataSet = [];
       $.each(data, function(k,e){
-        dataSet.push([e.codigoBarras , e.Produto , e.Quantidade , '<>'])
+        let input = `<input style="width: 70px;" type="number" value="0" class="form-control" id="adicionarQuantidadeProduto_${e.id}">`;
+        let botao = `<button class="btn btn-success" onclick="consultar.inclusaoQuantidadeProdutoEstoqueFilial($('#adicionarQuantidadeProduto_${e.id}').val(), ${e.id} , ${idFilial})">+</button>`;
+
+        dataSet.push([e.codigoBarras , e.Produto , e.Quantidade , input, botao])
       })
       inserirDataTable(dataSet, '#estoqueFilial')
     })
@@ -183,19 +260,70 @@ var consultar = {
     })
   },
 
+  usuarios:()=>{
+    $.getJSON('assets/conexao/__ConsultarDados.php', {solicitacao: 'consultarUsuarios'}, function(e){
+      let dataSet = new Array()
+      e.forEach(function(i){
+        dataSet.push([i.id, i.Nome, '<>'])
+      })
+      inserirDataTable(dataSet, '#usuariosTabela')
+    })
+  },
+
+  produtosParaInserirEstoque:(idFilial)=>{
+    $.getJSON('assets/conexao/__ConsultarDados.php', {solicitacao: 'consultarProdutosInserirEstoque'}, function(e){
+      let dataSet = new Array()
+      e.forEach(function(i){
+        console.log(i);
+        let input = `<input style="width: 70px;" type="number" value="0" class="form-control" id="adicionarProdutoEstoque_${i.id}">`;
+        let botao = `<button title="Adicionar Item ao Estoque" class="btn btn-success" onclick="consultar.inserirProdutoemEstoqueFilial('${i.id}', ${idFilial} , $('#adicionarProdutoEstoque_${i.id}').val())">+</button>`;
+        dataSet.push([i.codigoBarras, i.Produto, i.valor , input, botao ])
+      })
+      inserirDataTable(dataSet, '#produtosCadastrados')
+    })
+  },
+
+  inserirProdutoemEstoqueFilial:(idProduto, idFilial, quantidade)=>{
+    $.getJSON('assets/conexao/__CadastrarDados.php', {solicitacao: 'incluirProdutoEmEstoqueFilial' , idFilial: idFilial , idProduto: idProduto , quantidade: quantidade } ,
+    function(e){
+      if(e.mensagem == 'sucesso'){
+        consultar.produtosParaInserirEstoque(idFilial)
+      }
+    })
+  }
+
+
+
+
 }
 
 
-var mensagemErro = (mensagem)=>{
-  $('#alertaErro').text(mensagem);
-  $('#alertaSucesso').css('display','none');
-  $('#alertaErro').css('display','block');
+var mensagemErro = (mensagem, elementoSucesso = null, elementoErro = null)=>{
+  if(elementoSucesso == null && elementoErro == null){
+    $('#alertaErro').text(mensagem);
+    $('#alertaSucesso').css('display','none');
+    $('#alertaErro').css('display','block');
+  }else{
+    $(elementoErro).text(mensagem);
+    $(elementoSucesso).css('display','none');
+    $(elementoErro).css('display','block');
+  }
 }
 
-var mensagemSucesso = (mensagem)=>{
+var mensagemSucesso = (mensagem, elementoSucesso = null, elementoErro = null)=>{
   $('#alertaSucesso').text(mensagem);
   $('#alertaErro').css('display','none');
   $('#alertaSucesso').css('display','block');
+
+  if(elementoSucesso == null && elementoErro == null){
+    $('#alertaSucesso').text(mensagem);
+    $('#alertaErro').css('display','none');
+    $('#alertaSucesso').css('display','block');
+  }else{
+    $(elementoSucesso).text(mensagem);
+    $(elementoErro).css('display','none');
+    $(elementoSucesso).css('display','block');
+  }
 }
 
 var inserirDataTable = (dataSet, elemento , quantidade = 5)=>{
